@@ -4,13 +4,21 @@ package orz.zerock.mallapi.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import orz.zerock.mallapi.domain.Todo;
 import orz.zerock.mallapi.domain.TodoRepository;
+import orz.zerock.mallapi.dto.PageRequestDTO;
+import orz.zerock.mallapi.dto.PageResponseDTO;
 import orz.zerock.mallapi.dto.TodoDTO;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -60,5 +68,33 @@ public class TodoServiceImpl implements TodoService {
     public TodoDTO remove(Long tno) {
         todoRepository.deleteById(tno);
         return null;
+    }
+
+    @Override
+    public PageResponseDTO<TodoDTO> list(PageRequestDTO pageRequestDTO) {
+
+        Pageable pageable =
+                PageRequest.of(
+                        pageRequestDTO.getPage() - 1,
+                        pageRequestDTO.getSize(),
+                        Sort.by("tno").descending()
+                );
+
+        Page<Todo> result = todoRepository.findAll(pageable);
+
+        List<TodoDTO> dtoList = result.getContent().stream()
+                .map(todo -> modelMapper.map(todo, TodoDTO.class))
+                .collect(Collectors.toList());
+
+        long totalCount = result.getTotalElements();
+
+        PageResponseDTO<TodoDTO> responseDTO =
+                PageResponseDTO.<TodoDTO>withAll()
+                        .dtolist(dtoList)
+                        .pageRequestDTO(pageRequestDTO)
+                        .totalCount(totalCount)
+                        .build();
+
+        return responseDTO;
     }
 }
