@@ -12,7 +12,7 @@ public class PageResponseDTO<T> {
 
     private List dtoList;
 
-    private List<Integer> pageNumlist;
+    private List<Integer> pageNumList;
 
     private PageRequestDTO pageRequestDTO;
 
@@ -39,7 +39,7 @@ public class PageResponseDTO<T> {
 
         this.next = totalCount > end * pageRequestDTO.getSize();
 
-        this.pageNumlist = IntStream.rangeClosed(start, end).boxed().collect(Collectors.toList());
+        this.pageNumList = IntStream.rangeClosed(start, end).boxed().collect(Collectors.toList());
 
         if (prev) {
             this.prevPage = start - 1;
@@ -49,7 +49,7 @@ public class PageResponseDTO<T> {
             this.nextPage = end + 1;
         }
 
-        this.totalPage = this.pageNumlist.size();
+        this.totalPage = this.pageNumList.size();
         this.current = pageRequestDTO.getPage();
     }
 }
