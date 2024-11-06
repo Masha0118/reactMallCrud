@@ -1,9 +1,6 @@
 package orz.zerock.mallapi.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -16,7 +13,7 @@ import java.util.List;
 public class ProductDTO {
 
     private long pno;
-    private String name;
+    private String pname;
     private int price;
     private String pdesc;
     private boolean delFlag;

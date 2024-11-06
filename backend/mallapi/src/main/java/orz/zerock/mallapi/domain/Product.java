@@ -2,10 +2,7 @@ package orz.zerock.mallapi.domain;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +13,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class Product {
 
     @Id
@@ -27,19 +25,21 @@ public class Product {
     private String pdesc;
     private boolean delFlag;
 
+
     @ElementCollection
     @Builder.Default
     private List<ProductImage> imageList = new ArrayList<>();
 
-    public void setPrice(int price) {
+    public void changePrice(int price) {
         this.price = price;
     }
 
-    public void setPdesc(String pdesc) {
-        this.pdesc = pdesc;
+    public void changeDesc(String desc) {
+        this.pdesc = desc;
     }
 
-    public void setPname(String name) {
+
+    public void changeName(String name) {
         this.pname = name;
     }
 
@@ -57,5 +57,9 @@ public class Product {
 
     public void clearList() {
         this.imageList.clear();
+    }
+
+    public void changeDel(boolean delFlag) {
+        this.delFlag = delFlag;
     }
 }
