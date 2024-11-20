@@ -2,14 +2,13 @@ package orz.zerock.mallapi.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import orz.zerock.mallapi.dto.MemberDTO;
+import orz.zerock.mallapi.dto.MemberModifyDTO;
 import orz.zerock.mallapi.service.MemberService;
 import orz.zerock.mallapi.util.JWTUtil;
 
 import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @Log4j2
@@ -19,7 +18,7 @@ public class SocialController {
     private final MemberService memberService;
 
     @GetMapping("/api/member/kakao")
-    public Map<String, Object> getMemberFromKakao(String accessToken) {
+    public Map<String, Object> getMemberFromKakao(@RequestParam("accessToken") String accessToken) {
 
         log.info("access Token");
         log.info(accessToken);
@@ -35,5 +34,14 @@ public class SocialController {
         claims.put("refreshToken", jwtRefreshToken);
 
         return claims;
+    }
+
+    @PutMapping("/api/member/modify")
+    public Map<String, String> modify(@RequestBody MemberModifyDTO memberModifyDTO) {
+        log.info("member modify: " + memberModifyDTO);
+
+        memberService.modifyMember(memberModifyDTO);
+
+        return Map.of("result", "modified");
     }
 }

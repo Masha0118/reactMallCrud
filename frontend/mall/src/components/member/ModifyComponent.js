@@ -1,5 +1,8 @@
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
+import {modifyMember} from "../../api/memberAPI";
+import useCustomLogin from "../../hooks/useCustomLogin";
+import ResultModal from "../common/ResultModal";
 
 const initState = {
     email: '',
@@ -13,6 +16,10 @@ const ModifyComponent = () => {
 
     const loginInfo = useSelector(state => state.loginSlice)
 
+    const {moveToLogin} = useCustomLogin()
+
+    const [result, setResult] = useState()
+
     useEffect(() => {
         setMember({...loginInfo, pw: 'ABCD'})
     }, [loginInfo]);
@@ -22,8 +29,21 @@ const ModifyComponent = () => {
         setMember({...member})
     }
 
+    const handleClickModify = () => {
+        modifyMember(member).then(result => {
+            setResult('Modified')
+        })
+    }
+
+    const closeModal = () => {
+        setResult(null)
+        moveToLogin()
+    }
+
     return (
         <div className="mt-6">
+            {result? <ResultModal title={'회원정보'} content={'정보수정완료'}
+                callbackFn={closeModal()}></ResultModal> : <></> }
             <div className="flex justify-center">
                 <div className="relative mb-4 flex w-full flex-wrap items-stretch">
                     <div className="w-1/5 p-6 text-right font-bold">Email</div>
@@ -61,7 +81,8 @@ const ModifyComponent = () => {
 
             <div className="flex justify-center">
                 <div className="relative mb-4 flex w-full flex-wrap justify-end">
-                    <button type="button" className="rounded p-4 m-2 text-xl text-white bg-blue-500">
+                    <button type="button" className="rounded p-4 m-2 text-xl text-white bg-blue-500"
+                    onClick={handleClickModify}>
                         Modify
                     </button>
                 </div>

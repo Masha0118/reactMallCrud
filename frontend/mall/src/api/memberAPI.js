@@ -15,3 +15,9 @@ export const loginPost = async (loginParam) => {
 
     return res.data
 }
+
+export const modifyMember = async (member) => {
+    const res = await jwtAxios.put(`${host}/modify`, member)
+
+    return res.data
+}

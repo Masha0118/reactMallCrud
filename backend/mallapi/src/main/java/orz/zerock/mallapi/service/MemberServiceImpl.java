@@ -14,6 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import orz.zerock.mallapi.domain.Member;
 import orz.zerock.mallapi.domain.MemberRole;
 import orz.zerock.mallapi.dto.MemberDTO;
+import orz.zerock.mallapi.dto.MemberModifyDTO;
 import orz.zerock.mallapi.repository.MemberRepository;
 
 import java.util.LinkedHashMap;
@@ -121,5 +122,19 @@ public class MemberServiceImpl implements MemberService {
         return member;
     }
 
+
+    @Override
+    public void modifyMember(MemberModifyDTO memberModifyDTO) {
+
+        Optional<Member> result = memberRepository.findById(memberModifyDTO.getEmail());
+
+        Member member = result.orElseThrow();
+
+        member.changePw(passwordEncoder.encode(memberModifyDTO.getPw()));
+        member.changeSocial(false);
+        member.changeNickName(memberModifyDTO.getNickname());
+
+        memberRepository.save(member);
+    }
 
 }

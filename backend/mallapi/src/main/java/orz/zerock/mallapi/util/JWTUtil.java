@@ -48,7 +48,7 @@ public class JWTUtil {
             claim = Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
-                    .parseClaimsJwt(token)
+                    .parseClaimsJws(token)
                     .getBody();
         } catch (MalformedJwtException malformedJwtException) {
             throw new CustomJWTException("MalFormed");
