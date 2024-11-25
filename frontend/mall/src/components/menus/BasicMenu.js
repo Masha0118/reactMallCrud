@@ -1,6 +1,6 @@
 import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
-import {login} from "../slices/loginSlice";
+import {login} from "../../slices/loginSlice";
 
 const BasicMenu = () => {
 

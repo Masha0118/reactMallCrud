@@ -1,4 +1,4 @@
-import BasicMenu from "../../layouts/BasicMenu";
+import BasicMenu from "../../components/menus/BasicMenu";
 import LoginComponent from "../../components/member/LoginComponent";
 
 const LoginPage = () => {

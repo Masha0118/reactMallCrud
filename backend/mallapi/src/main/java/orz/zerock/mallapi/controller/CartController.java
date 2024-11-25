@@ -3,14 +3,12 @@ package orz.zerock.mallapi.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import orz.zerock.mallapi.dto.CartItemDTO;
 import orz.zerock.mallapi.dto.CartItemListDTO;
 import orz.zerock.mallapi.service.CartService;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -31,5 +29,24 @@ public class CartController {
         }
 
         return cartService.addOrModify(itemDTO);
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("/items")
+    public List<CartItemListDTO> getCartItems(Principal principal) {
+
+        String email = principal.getName();
+        log.info("------------------------");
+        log.info("email: ", email);
+
+        return cartService.getCartItems(email);
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @DeleteMapping("{cino}")
+    public List<CartItemListDTO> removeFromCart(@PathVariable("cino") Long cino) {
+        log.info("cart item no: " + cino);
+
+        return cartService.remove(cino);
     }
 }
