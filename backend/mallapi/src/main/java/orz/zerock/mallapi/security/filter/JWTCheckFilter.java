@@ -50,6 +50,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         log.info("-----------JWTCheckFilter------------");
 
         String authHeaderStr = request.getHeader("Authorization");
+        System.out.println("authHeaderStr" + authHeaderStr);
 
         try {
             String accessToken = authHeaderStr.substring(7);
@@ -92,6 +93,10 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         log.info("-----------------------");
         log.info("-----------------------");
         filterChain.doFilter(request, response);
+
+        log.info("Request URI: {}", request.getRequestURI());
+        log.info("Authorization Header: {}", request.getHeader("Authorization"));
+
 
     }
 
