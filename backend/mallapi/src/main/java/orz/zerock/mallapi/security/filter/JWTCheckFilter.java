@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Log4j2
 public class JWTCheckFilter extends OncePerRequestFilter {
